@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Harsh Raj | IoT Engineer Portfolio</title>
+  <meta
+    name="description"
+    content="Futuristic portfolio of Harsh Raj — IoT Engineer, Python Developer, Embedded Systems and Automation Enthusiast."
+  />
+
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-noise"></div>
+  <div class="scan-line"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <header class="site-header" id="siteHeader">
+    <nav class="navbar">
+      <a href="#home" class="logo">
+        HARSH<span>RAJ</span>
+      </a>
+
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero section-block" id="home">
+      <div class="hero-content reveal">
+        <p class="eyebrow status-text">● SYSTEM ONLINE</p>
+
+        <h1>
+          Harsh Raj
+          <span>IoT Engineer</span>
+        </h1>
+
+        <h2 class="typing-text">Python Developer • Embedded Systems • Automation</h2>
+
+        <p class="hero-desc">
+          Final-year B.Tech Computer Science and Engineering (IoT) student with hands-on
+          experience in embedded systems, IoT applications, sensor integration, GPS tracking,
+          automation projects and hardware-software interfacing.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn primary">View Projects</a>
+          <a href="#architecture" class="btn secondary">System Architecture</a>
+          <a href="./assets/resume.pdf" download class="btn ghost">Download Resume</a>
+        </div>
+
+        <div class="hud-stats">
+          <div class="stat-card">
+            <span>Python</span>
+            <strong data-count="92">0%</strong>
+          </div>
+
+          <div class="stat-card">
+            <span>IoT</span>
+            <strong data-count="90">0%</strong>
+          </div>
+
+          <div class="stat-card">
+            <span>ESP32</span>
+            <strong data-count="88">0%</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal delay-2">
+        <div class="profile-hud">
+          <div class="orbit orbit-1"></div>
+          <div class="orbit orbit-2"></div>
+          <div class="orbit orbit-3"></div>
+
+          <div class="profile-glow"></div>
+
+          <img src="./assets/harsh-profile.png" alt="Harsh Raj IoT Engineer" class="profile-img" />
+
+          <div class="hud-tag tag-1">ESP32</div>
+          <div class="hud-tag tag-2">GPS</div>
+          <div class="hud-tag tag-3">IMU</div>
+          <div class="hud-tag tag-4">LoRa</div>
+          <div class="hud-tag tag-5">Python</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <p class="section-tag reveal">PROFILE ANALYSIS</p>
+      <h2 class="section-title reveal">About Me</h2>
+
+      <div class="about-panel reveal">
+        <p>
+          I specialize in IoT-based systems where sensors, microcontrollers and software
+          work together to solve real-world problems. My experience includes ESP32,
+          Arduino, GPS modules, IMU sensors, OLED displays, buzzer alerts, Bluetooth
+          automation, LoRa communication and web development workflow.
+        </p>
+      </div>
+
+      <div class="about-mini-grid">
+        <div class="mini-card reveal">
+          <span>01</span>
+          <h3>Embedded Systems</h3>
+          <p>Hands-on work with ESP32, Arduino, GPIO, sensors and real-time device logic.</p>
+        </div>
+
+        <div class="mini-card reveal delay-1">
+          <span>02</span>
+          <h3>IoT Applications</h3>
+          <p>Projects involving GPS tracking, alert systems, wireless communication and automation.</p>
+        </div>
+
+        <div class="mini-card reveal delay-2">
+          <span>03</span>
+          <h3>Software Integration</h3>
+          <p>Combining Python, web technologies and hardware logic into complete solutions.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section" id="skills">
+      <p class="section-tag reveal">TECH STACK</p>
+      <h2 class="section-title reveal">Technical Skills</h2>
+
+      <div class="skill-grid">
+        <div class="skill-card reveal">
+          <div class="skill-icon">⌘</div>
+          <h3>Languages</h3>
+          <p>Python, C, C++, HTML, CSS</p>
+        </div>
+
+        <div class="skill-card reveal delay-1">
+          <div class="skill-icon">⚙</div>
+          <h3>Embedded & IoT</h3>
+          <p>Arduino, ESP32, Microcontroller Programming, Sensor Interfacing</p>
+        </div>
+
+        <div class="skill-card reveal delay-2">
+          <div class="skill-icon">⇄</div>
+          <h3>Protocols</h3>
+          <p>I2C, SPI, UART, Wi-Fi, Bluetooth, LoRa</p>
+        </div>
+
+        <div class="skill-card reveal">
+          <div class="skill-icon">◉</div>
+          <h3>Modules</h3>
+          <p>GPS Module, IMU Sensor, OLED Display, Buzzer, Bluetooth Module</p>
+        </div>
+
+        <div class="skill-card reveal delay-1">
+          <div class="skill-icon">▣</div>
+          <h3>Tools</h3>
+          <p>Arduino IDE, VS Code, Salesforce Trailhead, GitHub Pages</p>
+        </div>
+
+        <div class="skill-card reveal delay-2">
+          <div class="skill-icon">✦</div>
+          <h3>Focus Areas</h3>
+          <p>Automation, Sensor Fusion, IoT Cloud, Alert Systems, Web Design</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SYSTEM ARCHITECTURE -->
+    <section class="section architecture-section" id="architecture">
+      <p class="section-tag reveal">SYSTEM ARCHITECTURE</p>
+      <h2 class="section-title reveal">Accident Detection Working Flow</h2>
+
+      <div class="architecture-grid reveal">
+        <div class="arch-card">
+          <span>01</span>
+          <h3>Sensor Layer</h3>
+          <p>MPU9250/6500 reads acceleration, gyroscope, roll and pitch changes.</p>
+        </div>
+
+        <div class="arch-arrow">→</div>
+
+        <div class="arch-card">
+          <span>02</span>
+          <h3>GPS Layer</h3>
+          <p>NEO-6M GPS provides latitude, longitude, speed and Google Maps link.</p>
+        </div>
+
+        <div class="arch-arrow">→</div>
+
+        <div class="arch-card">
+          <span>03</span>
+          <h3>ESP32 Logic</h3>
+          <p>ESP32 checks impact, tilt, rotation and confirmation window.</p>
+        </div>
+
+        <div class="arch-arrow">→</div>
+
+        <div class="arch-card">
+          <span>04</span>
+          <h3>Local Output</h3>
+          <p>OLED shows status and buzzer provides local accident warning.</p>
+        </div>
+
+        <div class="arch-arrow">→</div>
+
+        <div class="arch-card">
+          <span>05</span>
+          <h3>Alert Channels</h3>
+          <p>Telegram, SMS and LoRa send accident message to contacts/gateway.</p>
+        </div>
+      </div>
+
+      <div class="system-panel reveal delay-2">
+        <div class="system-screen">
+          <p>STATUS: <span>NORMAL → TILT DETECTED → ACCIDENT SUSPECTED → ALERT SENT</span></p>
+          <p>DATA: <span>Acceleration + Gyroscope + GPS + Speed</span></p>
+          <p>OUTPUT: <span>OLED + Buzzer + Telegram + SMS + LoRa</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <p class="section-tag reveal">MISSION PROJECTS</p>
+      <h2 class="section-title reveal">Projects</h2>
+
+      <div class="project-grid">
+        <article class="project-card featured-project reveal">
+          <span class="project-num">01</span>
+          <div class="project-badge">LIVE DEMO AVAILABLE</div>
+
+          <h3>IoT-Based Vehicle Accident Detection System</h3>
+
+          <p>
+            A vehicle-mounted accident detection system using ESP32, MPU9250/6500 IMU,
+            GPS, OLED, buzzer, Telegram/SMS alert and LoRa communication to detect
+            accident-like motion and send emergency location alerts.
+          </p>
+
+          <div class="project-actions">
+            <a href="./accident-animation-v2.html" target="_blank" class="project-demo-btn">
+              ▶ Watch Live Working Animation
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card reveal delay-1">
+          <span class="project-num">02</span>
+          <div class="project-badge alt">AUTOMATION</div>
+
+          <h3>Bluetooth-Based Home Automation System</h3>
+
+          <p>
+            Arduino-based home automation system controlled through a mobile application
+            using Bluetooth communication, relay switching and wireless automation logic.
+          </p>
+        </article>
+
+        <article class="project-card reveal delay-2">
+          <span class="project-num">03</span>
+          <div class="project-badge">LIVE WEBSITE PROJECT</div>
+
+          <h3>Graphic Designer Portfolio Website</h3>
+
+          <p>
+            Designed and developed a modern Apple-style creative portfolio website to
+            showcase graphic design, video editing, social media creatives, event branding
+            and personal creative work using HTML, CSS and JavaScript.
+          </p>
+
+          <div class="project-actions">
+            <a
+              href="https://harsh74raj88.github.io/harsh-raj-Graphic-Designer-portfolio/"
+              target="_blank"
+              class="project-demo-btn"
+            >
+              ↗ View Live Graphic Portfolio
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card reveal delay-3">
+          <span class="project-num">04</span>
+          <div class="project-badge alt">CURRENT PORTFOLIO</div>
+
+          <h3>IoT Engineer Portfolio Website</h3>
+
+          <p>
+            Built a futuristic JARVIS HUD-style IoT engineer portfolio website to showcase
+            technical skills, embedded systems projects, internships, leadership activities
+            and live accident detection animation using HTML, CSS and JavaScript.
+          </p>
+
+          <div class="project-actions">
+            <a href="./index.html" class="project-demo-btn">
+              ↗ View This IoT Portfolio
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="section" id="experience">
+      <p class="section-tag reveal">EXPERIENCE LOG</p>
+      <h2 class="section-title reveal">Internships & Activities</h2>
+
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <span>May 2025 – Jun 2025</span>
+          <h3>Polytropic Services Pvt. Ltd.</h3>
+          <p>Industrial Intern — Web Design Technologies using HTML, CSS and JavaScript.</p>
+        </div>
+
+        <div class="timeline-item reveal delay-1">
+          <span>Dec 2023 – Jan 2024</span>
+          <h3>Salesforce Developer Virtual Internship</h3>
+          <p>Completed Trailhead modules covering Apex, APIs, LWC, automation and debugging.</p>
+        </div>
+
+        <div class="timeline-item reveal delay-2">
+          <span>Leadership</span>
+          <h3>GDG, NSS & Clubs</h3>
+          <p>Core member, event management lead, social club coordinator and photography club coordinator.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section class="section cert-section">
+      <p class="section-tag reveal">CERTIFICATIONS & ACTIVITIES</p>
+      <h2 class="section-title reveal">Extra Credentials</h2>
+
+      <div class="cert-grid">
+        <div class="cert-card reveal">Foundation of Cyber Security</div>
+        <div class="cert-card reveal delay-1">Introduction to Ethical Hacking</div>
+        <div class="cert-card reveal delay-2">Graphic Design with Photoshop</div>
+        <div class="cert-card reveal delay-3">Event Management Certification</div>
+        <div class="cert-card reveal">Google Cloud Study Jam 2024</div>
+        <div class="cert-card reveal delay-1">DevFest 2024</div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact" id="contact">
+      <p class="section-tag reveal">CONNECT REQUEST</p>
+      <h2 class="section-title reveal">Let’s Build Smart Technology Together</h2>
+
+      <div class="contact-panel reveal">
+        <a href="mailto:harsh74raj88@gmail.com">✉ harsh74raj88@gmail.com</a>
+        <a href="tel:+917488638300">☎ +91 7488638300</a>
+        <a href="https://www.linkedin.com/in/harsh-raj-9981b428a/" target="_blank">in LinkedIn Profile</a>
+        <a href="https://github.com/harsh74raj88" target="_blank">⌘ GitHub Profile</a>
+        <a href="./assets/resume.pdf" download>⬇ Download Resume</a>
+        <span>📍 Patna, Bihar, India</span>
+      </div>
+
+      <p class="footer-text reveal">
+        Designed as a futuristic IoT HUD interface — powered by HTML, CSS and JavaScript.
+      </p>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
