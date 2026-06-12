@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IoT Accident Detection Animation V2</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(0, 234, 255, 0.14), transparent 25%),
+        radial-gradient(circle at 85% 15%, rgba(168, 85, 247, 0.15), transparent 28%),
+        linear-gradient(135deg, #020617, #071225, #02040a);
+      color: #eaf8ff;
+      overflow: hidden;
+      padding: 22px;
+    }
+
+    .demo-title {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .demo-title h1 {
+      font-size: 34px;
+      color: #ffffff;
+      letter-spacing: -0.04em;
+    }
+
+    .demo-title p {
+      color: #9db8c9;
+      margin-top: 8px;
+      font-size: 15px;
+    }
+
+    .demo-layout {
+      width: min(1320px, 100%);
+      height: calc(100vh - 105px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 18px;
+    }
+
+    .scene,
+    .dashboard {
+      position: relative;
+      border-radius: 28px;
+      border: 1px solid rgba(0, 234, 255, 0.20);
+      background: rgba(4, 12, 24, 0.72);
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+      box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.42),
+        inset 0 0 50px rgba(0, 234, 255, 0.05);
+    }
+
+    .scene {
+      height: 100%;
+    }
+
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,234,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,234,255,0.05) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: 0.55;
+    }
+
+    .sky-glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(0,234,255,0.18), transparent 28%),
+        radial-gradient(circle at 78% 20%, rgba(168,85,247,0.16), transparent 32%);
+    }
+
+    .road {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 190px;
+      background: linear-gradient(#172033, #101722);
+      border-top: 2px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .road::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 200%;
+      height: 8px;
+      transform: translateY(-50%);
+      background: repeating-linear-gradient(
+        to right,
+        transparent 0 50px,
+        #facc15 50px 100px,
+        transparent 100px 150px
+      );
+      animation: roadMove 1.2s linear infinite;
+    }
+
+    @keyframes roadMove {
+      from { transform: translateY(-50%) translateX(0); }
+      to { transform: translateY(-50%) translateX(-150px); }
+    }
+
+    .device {
+      position: absolute;
+      top: 36px;
+      left: 34px;
+      width: 230px;
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(0,234,255,0.28);
+      background: rgba(3, 10, 21, 0.88);
+      box-shadow: 0 0 28px rgba(0,234,255,0.12);
+      z-index: 5;
+    }
+
+    .device h3 {
+      color: #00eaff;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .chip {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+      margin: 10px 0;
+    }
+
+    .chip span {
+      height: 10px;
+      background: rgba(0,234,255,0.22);
+      border-radius: 3px;
+      animation: chipBlink 1.4s infinite;
+    }
+
+    .chip span:nth-child(2n) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes chipBlink {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    .oled {
+      margin-top: 10px;
+      padding: 11px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,234,255,0.18);
+      background: #031018;
+      color: #32ff9f;
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .sensor-wave {
+      position: absolute;
+      top: 250px;
+      left: 45px;
+      width: 180px;
+      height: 80px;
+      border-radius: 18px;
+      border: 1px solid rgba(0,234,255,0.18);
+      background: rgba(0, 234, 255, 0.05);
+      z-index: 4;
+      padding: 12px;
+    }
+
+    .sensor-wave p {
+      color: #9db8c9;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      height: 38px;
+    }
+
+    .bars span {
+      width: 8px;
+      height: 10px;
+      border-radius: 999px 999px 0 0;
+      background: #00eaff;
+      opacity: 0.75;
+      animation: normalBars 1s infinite;
+    }
+
+    .bars span:nth-child(2) { animation-delay: 0.1s; }
+    .bars span:nth-child(3) { animation-delay: 0.2s; }
+    .bars span:nth-child(4) { animation-delay: 0.3s; }
+    .bars span:nth-child(5) { animation-delay: 0.4s; }
+    .bars span:nth-child(6) { animation-delay: 0.5s; }
+
+    @keyframes normalBars {
+      0%, 100% { height: 12px; }
+      50% { height: 32px; }
+    }
+
+    .gps {
+      position: absolute;
+      top: 58px;
+      right: 54px;
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,234,255,0.30);
+      display: grid;
+      place-items: center;
+      color: #00eaff;
+      font-weight: 900;
+      z-index: 4;
+    }
+
+    .gps::before,
+    .gps::after {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,234,255,0.30);
+      animation: gpsPulse 2s linear infinite;
+    }
+
+    .gps::after {
+      inset: -12px;
+      animation-delay: 0.8s;
+    }
+
+    @keyframes gpsPulse {
+      from { transform: scale(0.65); opacity: 1; }
+      to { transform: scale(1.35); opacity: 0; }
+    }
+
+    .obstacle {
+      position: absolute;
+      right: 185px;
+      bottom: 82px;
+      width: 50px;
+      height: 72px;
+      z-index: 7;
+    }
+
+    .obstacle::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 8px;
+      width: 34px;
+      height: 72px;
+      border-radius: 9px 9px 0 0;
+      background: linear-gradient(#ef4444, #7f1d1d);
+      box-shadow: 0 0 18px rgba(239,68,68,0.4);
+    }
+
+    .obstacle::after {
+      content: "!";
+      position: absolute;
+      left: 19px;
+      top: 9px;
+      color: #ffffff;
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .car {
+      position: absolute;
+      left: -190px;
+      bottom: 84px;
+      width: 170px;
+      height: 75px;
+      z-index: 9;
+    }
+
+    .car-body {
+      position: absolute;
+      bottom: 14px;
+      width: 170px;
+      height: 44px;
+      border-radius: 18px 24px 12px 12px;
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      box-shadow: 0 0 22px rgba(0,234,255,0.25);
+    }
+
+    .car-top {
+      position: absolute;
+      left: 38px;
+      bottom: 43px;
+      width: 78px;
+      height: 26px;
+      border-radius: 16px 16px 5px 5px;
+      background: linear-gradient(135deg, #bae6fd, #60a5fa);
+    }
+
+    .window {
+      position: absolute;
+      left: 51px;
+      bottom: 46px;
+      width: 50px;
+      height: 17px;
+      border-radius: 10px 10px 3px 3px;
+      background: rgba(2, 6, 23, 0.80);
+    }
+
+    .wheel {
+      position: absolute;
+      bottom: 0;
+      width: 31px;
+      height: 31px;
+      border-radius: 50%;
+      background: #020617;
+      border: 6px solid #94a3b8;
+      animation: wheelSpin 0.45s linear infinite;
+    }
+
+    .wheel.one { left: 24px; }
+    .wheel.two { right: 24px; }
+
+    @keyframes wheelSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    .car.drive {
+      animation: drive 5.8s linear forwards;
+    }
+
+    @keyframes drive {
+      to { left: calc(100% - 405px); }
+    }
+
+    .car.crashed {
+      left: calc(100% - 405px);
+      animation: crash 0.55s ease-in-out 5;
+    }
+
+    .car.crashed .wheel {
+      animation-play-state: paused;
+    }
+
+    @keyframes crash {
+      0% { transform: translate(0,0) rotate(0deg); }
+      25% { transform: translate(-7px,2px) rotate(-4deg); }
+      50% { transform: translate(5px,-2px) rotate(3deg); }
+      75% { transform: translate(-4px,2px) rotate(-2deg); }
+      100% { transform: translate(0,0) rotate(0deg); }
+    }
+
+    .impact {
+      position: absolute;
+      right: 238px;
+      bottom: 120px;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      z-index: 12;
+    }
+
+    .impact.show {
+      opacity: 1;
+    }
+
+    .impact span {
+      position: absolute;
+      width: 6px;
+      height: 50px;
+      border-radius: 999px;
+      background: linear-gradient(#ffffff, #f97316, transparent);
+      transform-origin: bottom;
+    }
+
+    .impact span:nth-child(1) { transform: rotate(-65deg); }
+    .impact span:nth-child(2) { transform: rotate(-30deg); }
+    .impact span:nth-child(3) { transform: rotate(5deg); }
+    .impact span:nth-child(4) { transform: rotate(42deg); }
+    .impact span:nth-child(5) { transform: rotate(72deg); }
+
+    .signal-line {
+      position: absolute;
+      left: 260px;
+      top: 115px;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(to right, #00eaff, #34ff9f);
+      box-shadow: 0 0 16px rgba(0,234,255,0.8);
+      z-index: 6;
+    }
+
+    .signal-line.send {
+      animation: sendSignal 1.8s ease forwards;
+    }
+
+    @keyframes sendSignal {
+      to { width: 455px; }
+    }
+
+    .phone {
+      position: absolute;
+      right: 38px;
+      bottom: 32px;
+      width: 175px;
+      height: 305px;
+      border-radius: 26px;
+      border: 2px solid rgba(255,255,255,0.12);
+      background: #050b14;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.45);
+      transform: translateY(24px);
+      opacity: 0;
+      transition: 0.5s ease;
+      z-index: 15;
+      overflow: hidden;
+    }
+
+    .phone.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .phone .top {
+      height: 30px;
+      display: grid;
+      place-items: center;
+    }
+
+    .notch {
+      width: 60px;
+      height: 8px;
+      border-radius: 999px;
+      background: #172033;
+    }
+
+    .message {
+      margin: 12px;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(0,234,255,0.09);
+      border: 1px solid rgba(0,234,255,0.18);
+    }
+
+    .message h4 {
+      color: #34ff9f;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .message p {
+      color: #dff6ff;
+      font-size: 12px;
+      line-height: 1.55;
+      margin-bottom: 5px;
+    }
+
+    .lora {
+      position: absolute;
+      right: 260px;
+      top: 205px;
+      width: 165px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(168,85,247,0.35);
+      background: rgba(19, 10, 34, 0.80);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: 0.5s ease;
+      z-index: 8;
+    }
+
+    .lora.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .lora h4 {
+      color: #c084fc;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .lora p {
+      color: #dac9ef;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .ambulance {
+      position: absolute;
+      left: -170px;
+      bottom: 88px;
+      width: 150px;
+      height: 64px;
+      z-index: 10;
+      opacity: 0;
+    }
+
+    .ambulance.show {
+      opacity: 1;
+      animation: ambulanceMove 3s linear forwards;
+    }
+
+    @keyframes ambulanceMove {
+      to { left: 78%; }
+    }
+
+    .amb-body {
+      position: absolute;
+      bottom: 12px;
+      width: 150px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ffffff, #cbd5e1);
+      border: 2px solid #ef4444;
+    }
+
+    .amb-body::before {
+      content: "+";
+      position: absolute;
+      left: 60px;
+      top: 4px;
+      color: #ef4444;
+      font-size: 30px;
+      font-weight: 900;
+    }
+
+    .siren {
+      position: absolute;
+      top: 0;
+      left: 62px;
+      width: 24px;
+      height: 12px;
+      border-radius: 8px 8px 0 0;
+      background: #ef4444;
+      box-shadow: 0 0 16px #ef4444;
+      animation: sirenBlink 0.45s infinite;
+    }
+
+    @keyframes sirenBlink {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 1; }
+    }
+
+    .amb-wheel {
+      position: absolute;
+      bottom: 0;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #020617;
+      border: 5px solid #64748b;
+    }
+
+    .amb-wheel.a { left: 24px; }
+    .amb-wheel.b { right: 24px; }
+
+    .dashboard {
+      padding: 22px;
+    }
+
+    .dashboard h2 {
+      font-size: 25px;
+      color: #ffffff;
+      margin-bottom: 16px;
+      letter-spacing: -0.03em;
+    }
+
+    .step {
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.035);
+      margin-bottom: 11px;
+      transition: 0.35s ease;
+    }
+
+    .step.active {
+      border-color: rgba(0,234,255,0.42);
+      background: rgba(0,234,255,0.08);
+      box-shadow: 0 0 25px rgba(0,234,255,0.08);
+    }
+
+    .step b {
+      color: #ffffff;
+      font-size: 14px;
+    }
+
+    .step p {
+      color: #9db8c9;
+      margin-top: 5px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .status-box {
+      padding: 13px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .status-box span {
+      color: #8fb6c9;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .status-box strong {
+      display: block;
+      margin-top: 8px;
+      color: #ffffff;
+      font-size: 14px;
+    }
+
+    .green { color: #34ff9f !important; }
+    .yellow { color: #facc15 !important; }
+    .red { color: #fb7185 !important; }
+    .cyan { color: #00eaff !important; }
+
+    .progress {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .progress p {
+      color: #9db8c9;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .fill {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(to right, #00eaff, #34ff9f, #a855f7);
+      box-shadow: 0 0 20px rgba(0,234,255,0.40);
+    }
+
+    .fill.run {
+      animation: progress 15s linear forwards;
+    }
+
+    @keyframes progress {
+      to { width: 100%; }
+    }
+
+    .note {
+      margin-top: 14px;
+      color: #8faec1;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1000px) {
+      body {
+        overflow: auto;
+      }
+
+      .demo-layout {
+        height: auto;
+        grid-template-columns: 1fr;
+      }
+
+      .scene {
+        height: 560px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="demo-title">
+    <h1>IoT Accident Detection & Emergency Alert System</h1>
+    <p>15-second visual demo: detection → confirmation → GPS → Telegram/SMS/LoRa → response</p>
+  </div>
+
+  <div class="demo-layout">
+    <section class="scene">
+      <div class="grid"></div>
+      <div class="sky-glow"></div>
+
+      <div class="device">
+        <h3>ESP32 Vehicle Unit</h3>
+        <p style="color:#9db8c9;font-size:12px;line-height:1.5;">
+          MPU9250/6500 • GPS • OLED • Buzzer • LoRa
+        </p>
+        <div class="chip">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="oled" id="oled">
+          OLED: NORMAL<br>
+          GPS: LOCK<br>
+          BUZZER: OFF
+        </div>
+      </div>
+
+      <div class="sensor-wave">
+        <p>IMU Sensor Feed</p>
+        <div class="bars" id="bars">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="gps">GPS</div>
+
+      <div class="signal-line" id="signalLine"></div>
+
+      <div class="lora" id="lora">
+        <h4>LoRa Gateway</h4>
+        <p>Accident packet received locally through RF link.</p>
+      </div>
+
+      <div class="phone" id="phone">
+        <div class="top"><div class="notch"></div></div>
+        <div class="message">
+          <h4>Emergency Alert</h4>
+          <p>ACCIDENT CONFIRMED</p>
+          <p>Lat: 25.6123</p>
+          <p>Lon: 85.1437</p>
+          <p>Google Maps link sent</p>
+        </div>
+      </div>
+
+      <div class="car" id="car">
+        <div class="car-top"></div>
+        <div class="window"></div>
+        <div class="car-body"></div>
+        <div class="wheel one"></div>
+        <div class="wheel two"></div>
+      </div>
+
+      <div class="impact" id="impact">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="obstacle"></div>
+
+      <div class="ambulance" id="ambulance">
+        <div class="siren"></div>
+        <div class="amb-body"></div>
+        <div class="amb-wheel a"></div>
+        <div class="amb-wheel b"></div>
+      </div>
+
+      <div class="road"></div>
+    </section>
+
+    <aside class="dashboard">
+      <h2>System Working Flow</h2>
+
+      <div class="step active" id="s1">
+        <b>1. Normal Monitoring</b>
+        <p>ESP32 reads IMU and GPS values continuously while vehicle is moving.</p>
+      </div>
+
+      <div class="step" id="s2">
+        <b>2. Impact / Tilt Detected</b>
+        <p>Acceleration spike, gyroscope rotation and tilt indicate accident-like motion.</p>
+      </div>
+
+      <div class="step" id="s3">
+        <b>3. Accident Confirmed</b>
+        <p>System confirms accident after logic check and activates buzzer/OLED warning.</p>
+      </div>
+
+      <div class="step" id="s4">
+        <b>4. GPS Location Captured</b>
+        <p>Latitude, longitude, speed and Google Maps link are prepared.</p>
+      </div>
+
+      <div class="step" id="s5">
+        <b>5. Alerts Sent</b>
+        <p>Telegram, SMS and LoRa messages are sent to contacts/gateway.</p>
+      </div>
+
+      <div class="step" id="s6">
+        <b>6. Emergency Response</b>
+        <p>Receiver gets location and can take action quickly.</p>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-box">
+          <span>State</span>
+          <strong id="state" class="green">NORMAL</strong>
+        </div>
+        <div class="status-box">
+          <span>IMU</span>
+          <strong id="imu" class="cyan">STABLE</strong>
+        </div>
+        <div class="status-box">
+          <span>GPS</span>
+          <strong id="gpsStatus" class="green">LOCKED</strong>
+        </div>
+        <div class="status-box">
+          <span>Buzzer</span>
+          <strong id="buzzer" class="cyan">OFF</strong>
+        </div>
+      </div>
+
+      <div class="progress">
+        <p>15-second animation progress</p>
+        <div class="bar">
+          <div class="fill" id="fill"></div>
+        </div>
+      </div>
+
+      <p class="note">
+        Demo shows the complete project idea in a short visual story:
+        accident event, sensor fusion, GPS tracking, local warning and multi-channel alert delivery.
+      </p>
+    </aside>
+  </div>
+
+  <script>
+    const car = document.getElementById("car");
+    const impact = document.getElementById("impact");
+    const oled = document.getElementById("oled");
+    const phone = document.getElementById("phone");
+    const lora = document.getElementById("lora");
+    const signalLine = document.getElementById("signalLine");
+    const ambulance = document.getElementById("ambulance");
+    const fill = document.getElementById("fill");
+
+    const state = document.getElementById("state");
+    const imu = document.getElementById("imu");
+    const gpsStatus = document.getElementById("gpsStatus");
+    const buzzer = document.getElementById("buzzer");
+
+    const steps = ["s1", "s2", "s3", "s4", "s5", "s6"].map(id => document.getElementById(id));
+
+    function setStep(index) {
+      steps.forEach(step => step.classList.remove("active"));
+      steps[index].classList.add("active");
+    }
+
+    function resetDemo() {
+      car.className = "car";
+      impact.classList.remove("show");
+      phone.classList.remove("show");
+      lora.classList.remove("show");
+      signalLine.classList.remove("send");
+      ambulance.classList.remove("show");
+      fill.classList.remove("run");
+
+      state.textContent = "NORMAL";
+      state.className = "green";
+
+      imu.textContent = "STABLE";
+      imu.className = "cyan";
+
+      gpsStatus.textContent = "LOCKED";
+      gpsStatus.className = "green";
+
+      buzzer.textContent = "OFF";
+      buzzer.className = "cyan";
+
+      oled.innerHTML = "OLED: NORMAL<br>GPS: LOCK<br>BUZZER: OFF";
+
+      setStep(0);
+
+      void car.offsetWidth;
+      void fill.offsetWidth;
+      void signalLine.offsetWidth;
+    }
+
+    function runDemo() {
+      resetDemo();
+
+      setTimeout(() => {
+        car.classList.add("drive");
+        fill.classList.add("run");
+      }, 200);
+
+      setTimeout(() => {
+        setStep(1);
+        state.textContent = "TILT DETECTED";
+        state.className = "yellow";
+        imu.textContent = "SPIKE FOUND";
+        imu.className = "yellow";
+        oled.innerHTML = "OLED: TILT DETECTED<br>IMU: HIGH ROTATION<br>CHECKING...";
+      }, 5600);
+
+      setTimeout(() => {
+        car.classList.remove("drive");
+        car.classList.add("crashed");
+        impact.classList.add("show");
+      }, 6000);
+
+      setTimeout(() => {
+        impact.classList.remove("show");
+      }, 7000);
+
+      setTimeout(() => {
+        setStep(2);
+        state.textContent = "ACCIDENT";
+        state.className = "red";
+        buzzer.textContent = "ON";
+        buzzer.className = "red";
+        oled.innerHTML = "OLED: ACCIDENT!<br>BUZZER: ON<br>ALERT: WAIT...";
+      }, 7800);
+
+      setTimeout(() => {
+        setStep(3);
+        gpsStatus.textContent = "LOCATION READY";
+        gpsStatus.className = "green";
+        oled.innerHTML = "OLED: GPS READY<br>LAT: 25.6123<br>LON: 85.1437";
+      }, 9600);
+
+      setTimeout(() => {
+        setStep(4);
+        signalLine.classList.add("send");
+        phone.classList.add("show");
+        lora.classList.add("show");
+        oled.innerHTML = "OLED: ALERT SENT<br>TELEGRAM: OK<br>SMS/LORA: OK";
+      }, 11200);
+
+      setTimeout(() => {
+        setStep(5);
+        ambulance.classList.add("show");
+      }, 12400);
+
+      setTimeout(() => {
+        runDemo();
+      }, 15000);
+    }
+
+    runDemo();
+  </script>
+</body>
+</html>
